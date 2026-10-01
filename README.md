@@ -1,91 +1,251 @@
-# 🏗 Scaffold-ETH 2
+# Decentralized Voting dApp
 
-<h4 align="center">
-  <a href="https://docs.scaffoldeth.io">Documentation</a> |
-  <a href="https://scaffoldeth.io">Website</a>
-</h4>
+Децентрализованное приложение для голосования, разработанное на базе Scaffold-ETH 2.
 
-🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
+Проект позволяет пользователям голосовать за один из предложенных вариантов с использованием Ethereum-адреса. Один адрес может проголосовать только один раз. Результаты голосования хранятся в смарт-контракте и отображаются в веб-интерфейсе.
 
-> [!NOTE]
-> 🤖 Scaffold-ETH 2 is AI-ready! It has everything agents need to build on Ethereum. Check `.agents/`, `.claude/`, `.opencode` or `.cursor/` for more info.
+## Функциональность
 
-⚙️ Built using NextJS, RainbowKit, Foundry/Hardhat, Wagmi, Viem, and Typescript.
+- отображение вопроса голосования;
+- отображение вариантов ответа;
+- голосование через Ethereum-транзакцию;
+- один Ethereum-адрес может проголосовать только один раз;
+- отображение количества голосов;
+- отображение общего количества голосов;
+- отображение результатов в процентах;
+- автоматическое обновление результатов после голосования;
+- проверка некорректного варианта голосования;
+- автоматические тесты смарт-контракта.
 
-- ✅ **Contract Hot Reload**: Your frontend auto-adapts to your smart contract as you edit it.
-- 🪝 **[Custom hooks](https://docs.scaffoldeth.io/hooks/)**: Collection of React hooks wrapper around [wagmi](https://wagmi.sh/) to simplify interactions with smart contracts with typescript autocompletion.
-- 🧱 [**Components**](https://docs.scaffoldeth.io/components/): Collection of common web3 components to quickly build your frontend.
-- 🔥 **Burner Wallet & Local Faucet**: Quickly test your application with a burner wallet and local faucet.
-- 🔐 **Integration with Wallet Providers**: Connect to different wallet providers and interact with the Ethereum network.
+## Используемые технологии
 
-![Debug Contracts tab](https://github.com/scaffold-eth/scaffold-eth-2/assets/55535804/b237af0c-5027-4849-a5c1-2e31495cccb1)
+Проект создан с использованием:
 
-## Requirements
+- Solidity;
+- Scaffold-ETH 2;
+- Hardhat;
+- Next.js;
+- TypeScript;
+- Wagmi;
+- Viem;
+- Yarn.
 
-Before you begin, you need to install the following tools:
+## Структура проекта
 
-- [Node (>= v22.10.0)](https://nodejs.org/en/download/)
-- Yarn ([v1](https://classic.yarnpkg.com/en/docs/install/) or [v2+](https://yarnpkg.com/getting-started/install))
-- [Git](https://git-scm.com/downloads)
+Основные файлы проекта:
 
-## Quickstart
-
-To get started with Scaffold-ETH 2, follow the steps below:
-
-1. Install the latest version of Scaffold-ETH 2
-
+```text
+packages/
+│
+├── hardhat/
+│   │
+│   ├── contracts/
+│   │   └── Voting.sol
+│   │
+│   ├── deploy/
+│   │   └── 00_deploy_voting.ts
+│   │
+│   └── test/
+│       └── Voting.ts
+│
+└── nextjs/
+    └── app/
+        └── page.tsx
 ```
-npx create-eth@latest
+
+### Voting.sol
+
+Смарт-контракт голосования.
+
+Контракт хранит:
+
+- вопрос голосования;
+- варианты ответа;
+- количество голосов для каждого варианта;
+- информацию о том, голосовал ли Ethereum-адрес.
+
+Основная функция:
+
+```solidity
+vote(uint256 _optionIndex)
 ```
 
-This command will install all the necessary packages and dependencies, so it might take a while.
+Она позволяет проголосовать за вариант с указанным индексом.
 
-> [!NOTE]
-> You can also initialize your project with one of our extensions to add specific features or starter-kits. Learn more in our [extensions documentation](https://docs.scaffoldeth.io/extensions/).
+Повторное голосование с одного Ethereum-адреса запрещено.
 
-2. Run a local network in the first terminal:
+## Предварительные требования
 
+Перед запуском необходимо установить:
+
+```text
+Node.js
+Git
+Yarn
 ```
+
+Проект был протестирован с:
+
+```text
+Node.js v24.21.0
+Yarn 4.13.0
+```
+
+## Установка
+
+Клонировать репозиторий:
+
+```bash
+git clone https://github.com/Shamil2017/myvoteproject.git
+```
+
+Перейти в папку проекта:
+
+```bash
+cd myvoteproject
+```
+
+Установить зависимости:
+
+```bash
+yarn install
+```
+
+## Запуск локальной Ethereum-сети
+
+В первом терминале выполнить:
+
+```bash
 yarn chain
 ```
 
-This command starts a local Ethereum network that runs on your local machine and can be used for testing and development. Learn how to [customize your network configuration](https://docs.scaffoldeth.io/quick-start/environment#1-initialize-a-local-blockchain).
+Команда запускает локальную тестовую Ethereum-сеть Hardhat.
 
-3. On a second terminal, deploy the test contract:
+Терминал необходимо оставить открытым.
 
-```
+## Размещение смарт-контракта
+
+Во втором терминале выполнить:
+
+```bash
 yarn deploy
 ```
 
-This command deploys a test smart contract to the local network. You can find more information about how to customize your contract and deployment script in our [documentation](https://docs.scaffoldeth.io/quick-start/environment#2-deploy-your-smart-contract).
+Команда компилирует и размещает смарт-контракт `Voting` в локальной сети.
 
-4. On a third terminal, start your NextJS app:
+При размещении создаётся голосование с вопросом:
 
+```text
+Какой язык программирования вам нравится больше?
 ```
+
+и вариантами:
+
+```text
+Python
+JavaScript
+Solidity
+```
+
+## Запуск веб-интерфейса
+
+В третьем терминале выполнить:
+
+```bash
 yarn start
 ```
 
-Visit your app on: `http://localhost:3000`. You can interact with your smart contract using the `Debug Contracts` page. You can tweak the app config in `packages/nextjs/scaffold.config.ts`.
+После запуска приложение доступно по адресу:
 
-**What's next**:
+```text
+http://localhost:3000
+```
 
-Visit the [What's next section of our docs](https://docs.scaffoldeth.io/quick-start/environment#whats-next) to learn how to:
+## Как работает голосование
 
-- Edit your smart contracts
-- Edit your deployment scripts
-- Customize your frontend
-- Edit the app config
-- Writing and running tests
-- [Setting up external services and API keys](https://docs.scaffoldeth.io/deploying/deploy-smart-contracts#configuration-of-third-party-services-for-production-grade-apps)
+Пользователь выбирает один из вариантов и нажимает кнопку:
 
-## Documentation
+```text
+Голосовать
+```
 
-Visit our [docs](https://docs.scaffoldeth.io) to learn all the technical details and guides of Scaffold-ETH 2.
+Веб-интерфейс вызывает функцию смарт-контракта:
 
-To know more about its features, check out our [website](https://scaffoldeth.io).
+```solidity
+vote(...)
+```
 
-## Contributing to Scaffold-ETH 2
+После успешной транзакции:
 
-We welcome contributions to Scaffold-ETH 2!
+```text
+количество голосов выбранного варианта увеличивается на 1;
+Ethereum-адрес помечается как проголосовавший;
+повторное голосование с этого адреса запрещается.
+```
 
-Please see [CONTRIBUTING.MD](https://github.com/scaffold-eth/scaffold-eth-2/blob/main/CONTRIBUTING.md) for more information and guidelines for contributing to Scaffold-ETH 2.
+Проверка повторного голосования выполняется непосредственно в смарт-контракте:
+
+```solidity
+require(
+    !hasVoted[msg.sender],
+    "You have already voted"
+);
+```
+
+Поэтому ограничение невозможно обойти простой модификацией веб-интерфейса.
+
+## Тестирование
+
+Для запуска автоматических тестов выполнить:
+
+```bash
+yarn hardhat:test
+```
+
+Тесты находятся в:
+
+```text
+packages/hardhat/test/Voting.ts
+```
+
+Проверяется:
+
+- сохранение вопроса;
+- создание трёх вариантов;
+- начальное количество голосов;
+- успешное голосование;
+- изменение `hasVoted`;
+- запрет повторного голосования;
+- запрет голосования за несуществующий вариант.
+
+Ожидаемый результат:
+
+```text
+6 passing
+```
+
+## Проверка TypeScript
+
+Для проверки типов фронтенда:
+
+```bash
+yarn next:check-types
+```
+
+## Проверка кода
+
+Для запуска линтера:
+
+```bash
+yarn lint
+```
+
+## Автор
+
+Учебный проект по курсу Blockchain.
+
+## Репозиторий
+
+```text
+https://github.com/Shamil2017/myvoteproject
+```
